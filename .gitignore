@@ -20,3 +20,7 @@
 *.exe
 *.out
 *.app
+
+
+# OS X specific file
+.DS_Store

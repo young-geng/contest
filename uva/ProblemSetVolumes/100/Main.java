@@ -1,3 +1,10 @@
+/**
+ * UVa Problem Set 100.
+ * Cached search with Hashtable.
+ */
+
+
+
 import java.util.*;
 
 public class Main {

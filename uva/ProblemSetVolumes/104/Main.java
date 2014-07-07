@@ -3,11 +3,7 @@ import java.util.*;
 public class Main {
 	static double[][] map;
 	static LinkedList<Route> queue;
-
-
-
-
-
+    static double[] marked;
 	public static void main(String[] args) {
 		Scanner cin = new Scanner(System.in);
 		while (cin.hasNextInt()) {
@@ -27,6 +23,7 @@ public class Main {
 			for (int i = 0; i < dim; i++) {
 				queue = new LinkedList<Route>();
 				queue.add(new Route(i));
+                marked = new double[dim];
 				while (!queue.isEmpty() && queue.getFirst().pathLength() <= dim + 1) {
 					Route current = queue.remove();
 					if (current.isGoal()) {
@@ -35,6 +32,11 @@ public class Main {
 						}
 						break;
 					}
+                    if (current.val <= marked[current.lastStep()]) {
+                        continue;
+                    } else {
+                    	marked[current.lastStep()] = current.val;
+                    }
 					for (int j = 0; j < dim; j++) {
 						if (j == current.lastStep())
 							continue;
@@ -45,8 +47,9 @@ public class Main {
 			if (ans == null) {
 				System.out.println("no arbitrage sequence exists");
 			} else {
-				for (int i = 0; i < ans.size(); i++) {
-					System.out.print((ans.get(i).intValue() + 1) + " ");
+				System.out.print(ans.get(0).intValue() + 1);
+				for (int i = 1; i < ans.size(); i++) {
+					System.out.print(" " + (ans.get(i).intValue() + 1));
 				}
 				System.out.println();
 			}

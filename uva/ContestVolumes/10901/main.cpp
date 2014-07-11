@@ -18,6 +18,7 @@ public:
 };
 
 
+
 Direction reverse(Direction direc) {
     return direc == LEFT ? RIGHT : LEFT;
 }
@@ -26,14 +27,16 @@ bool hasCar(int carCount, vector<int> cars) {
     return carCount < cars.size();
 }
 
+
+
 int minArriveTime(int leftCount, int rightCount, vector<int> left, vector<int> right, Car cars[]) {
-    int leftMin = hasCar(leftCount, left) ? leftFirstTime : INT_MAX;
-    int rightMin = hasCar(rightCount, right) ? rightFirstTime : INT_MAX;
-    int min = leftMin <= rightMin ? leftMin : rightMin;
-    if (min == INT_MAX) {
+    if (!hasCar(leftCount, left) && !hasCar(rightCount, right)) 
         return -1;
-    }
-    return min;
+    if (hasCar(leftCount, left) && hasCar(rightCount, right))
+        return min<int>(leftFirstTime, rightFirstTime);
+    if (hasCar(leftCount, left))
+        return leftFirstTime;
+    return rightFirstTime;
 }
 
 void runTestCase() {
@@ -65,12 +68,7 @@ void runTestCase() {
     int timeCounter = 0;
     while (hasCar(leftCount, left) || hasCar(rightCount, right)) {
         if (currentDirection == LEFT) {
-            if (hasCar(leftCount, left) 
-                && leftFirstTime > timeCounter) 
-            {
-                if (minArriveTime(leftCount, rightCount, left, right, cars) != -1)
-                    timeCounter = minArriveTime(leftCount, rightCount, left, right, cars);
-            }
+            timeCounter = max<int>(timeCounter, minArriveTime(leftCount, rightCount, left, right, cars));
             for (int i = 0; i < load 
                 && hasCar(leftCount, left)
                 && leftFirstTime <= timeCounter; i++, leftCount++) 
@@ -78,13 +76,7 @@ void runTestCase() {
                 cars[left[leftCount]].crossTime = timeCounter + crossTime;
             }
         } else {
-            if (hasCar(rightCount, right) 
-                && rightFirstTime > timeCounter
-                )
-            {
-                if (minArriveTime(leftCount, rightCount, left, right, cars) != -1)
-                    timeCounter = minArriveTime(leftCount, rightCount, left, right, cars);
-            }
+            timeCounter = max<int>(timeCounter, minArriveTime(leftCount, rightCount, left, right, cars));
             for (int i = 0; i < load 
                 && hasCar(rightCount, right)
                 && rightFirstTime <= timeCounter; i++, rightCount++) 
